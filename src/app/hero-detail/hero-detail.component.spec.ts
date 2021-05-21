@@ -12,7 +12,7 @@ describe('HeroDetailComponent', () => {
 
   beforeEach(() => {
     mockActivatedRoute = {
-      snapshot: { paramMap: { get: () => { return '3'; }}}
+      snapshot: { paramMap: { get: () => { return '3'; } } }
     }
     mockHeroService = jasmine.createSpyObj(['getHero', 'updateHero']);
     mockLocation = jasmine.createSpyObj(['back']);
@@ -21,14 +21,14 @@ describe('HeroDetailComponent', () => {
       imports: [FormsModule],
       declarations: [HeroDetailComponent],
       providers: [
-        {provide: ActivatedRoute, useValue: mockActivatedRoute},
-        {provide: HeroService, useValue: mockHeroService},
-        {provide: Location, useValue: mockLocation},
+        { provide: ActivatedRoute, useValue: mockActivatedRoute },
+        { provide: HeroService, useValue: mockHeroService },
+        { provide: Location, useValue: mockLocation },
       ]
     });
     fixture = TestBed.createComponent(HeroDetailComponent);
 
-    mockHeroService.getHero.and.returnValue(of({id: 3, name: 'SuperDude', strength: 100}));
+    mockHeroService.getHero.and.returnValue(of({ id: 3, name: 'SuperDude', strength: 100 }));
   });
 
   it('should render hero name in a h2 tag', () => {
@@ -36,4 +36,29 @@ describe('HeroDetailComponent', () => {
 
     expect(fixture.nativeElement.querySelector('h2').textContent).toContain('SUPERDUDE');
   })
+
+  it('should call updateHero when save is called', ((done) => {
+    mockHeroService.updateHero.and.returnValue(of({}));
+    fixture.detectChanges();
+
+    fixture.componentInstance.save();
+
+    setTimeout(() => {
+      expect(mockHeroService.updateHero).toHaveBeenCalled();
+      done();
+    }, 300);
+
+
+  }))
+
+  // it('should call updateHero when save is called', async(() => {
+  //   mockHeroService.updateHero.and.returnValue(of({}));
+  //   fixture.detectChanges();
+
+  //   fixture.componentInstance.save();
+
+  //   fixture.whenStable().then(() => {
+  //     expect(mockHeroService.updateHero).toHaveBeenCalled();
+  //   });
+  // }))
 })
