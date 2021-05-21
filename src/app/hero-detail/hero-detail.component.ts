@@ -33,12 +33,21 @@ export class HeroDetailComponent implements OnInit {
     this.location.back();
   }
 
+
   save(): void {
-    debounce(() => {
+    var p = new Promise((resolve) => {
       this.heroService.updateHero(this.hero)
         .subscribe(() => this.goBack());
-    }, 250, false)();
+      resolve();
+    });
   }
+
+  // save(): void {
+  //   debounce(() => {
+  //     this.heroService.updateHero(this.hero)
+  //       .subscribe(() => this.goBack());
+  //   }, 250, false)();
+  // }
 }
 
 function debounce(func, wait, immediate) {
@@ -54,4 +63,4 @@ function debounce(func, wait, immediate) {
     timeout = setTimeout(later, wait);
     if (callNow) func.apply(context, args);
   };
-};
+}
